@@ -14,7 +14,7 @@ def testMainWindowOpens(qtbot) -> None:
 
     assert mainWindow.isVisible()
     assert mainWindow.windowTitle() == "SAE Fractional Calculator"
-    assert mainWindow.statusLabel.text() == "Ready"
+    assert mainWindow.statusBar().currentMessage() == "Ready"
 
 
 def testGreetButtonUpdatesLabel(qtbot) -> None:
@@ -24,4 +24,43 @@ def testGreetButtonUpdatesLabel(qtbot) -> None:
 
     qtbot.mouseClick(mainWindow.greetButton, Qt.MouseButton.LeftButton)
 
-    assert mainWindow.statusLabel.text() == "Hello from SAE Fractional Calculator"
+    assert mainWindow.statusBar().currentMessage() == "Hello from SAE Fractional Calculator"
+
+
+def testMenuBarStructure(qtbot) -> None:
+    mainWindow = MainWindow()
+    qtbot.addWidget(mainWindow)
+
+    menuTitles = [action.text() for action in mainWindow.menuBar().actions()]
+    assert menuTitles == ["&File", "&Help"]
+
+    fileItems = [a.text() for a in mainWindow.fileMenu.actions() if not a.isSeparator()]
+    assert fileItems == ["&New", "&Open...", "&Save", "E&xit"]
+    assert any(a.isSeparator() for a in mainWindow.fileMenu.actions())
+
+    assert [a.text() for a in mainWindow.helpMenu.actions()] == ["&About"]
+
+
+def testFileMenuPlaceholdersUpdateStatus(qtbot) -> None:
+    mainWindow = MainWindow()
+    qtbot.addWidget(mainWindow)
+
+    mainWindow.newAction.trigger()
+    assert mainWindow.statusBar().currentMessage() == "File > New selected"
+
+    mainWindow.openAction.trigger()
+    assert mainWindow.statusBar().currentMessage() == "File > Open selected"
+
+    mainWindow.saveAction.trigger()
+    assert mainWindow.statusBar().currentMessage() == "File > Save selected"
+
+
+def testAboutTextContents(qtbot) -> None:
+    mainWindow = MainWindow()
+    qtbot.addWidget(mainWindow)
+
+    aboutText = mainWindow.buildAboutText()
+    assert "SAE Fractional Calculator" in aboutText
+    assert "Editor: Francois Charette" in aboutText
+    assert "AI Agent: Claude - Fable 5" in aboutText
+    assert "Charette AI Group, LLC" in aboutText
