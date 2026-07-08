@@ -1,6 +1,6 @@
 [project]
 name = "saeCalculator"
-version = "0.1.0"
+version = "1.0.0"
 description = "Calculator for fractional computation needed during DIY projects (PySide6)"
 requires-python = ">=3.14"
 dependencies = [
@@ -12,6 +12,10 @@ dev = [
     "pytest>=8.0,<9",
     "pytest-qt>=4.4,<5",
     "ruff>=0.4,<1",
+]
+build = [
+    "pyinstaller>=6.16,<7",
+    "pillow>=10,<12",
 ]
 
 [project.scripts]

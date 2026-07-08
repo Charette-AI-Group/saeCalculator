@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 appName = "SAE Fractional Calculator"
-appVersion = "0.1.0"
+appVersion = "1.0.0"
 organizationName = "Charette AI Group"
 
 # Help > About contents
@@ -15,6 +15,12 @@ copyrightHolder = "Charette AI Group, LLC"
 
 projectRoot = Path(__file__).resolve().parents[2]
 resourcesDir = Path(__file__).resolve().parent / "resources"
+iconPngPath = resourcesDir / "icon.png"
+iconIcoPath = resourcesDir / "icon.ico"
+
+# Distinct taskbar identity on Windows (otherwise the Python icon shows).
+appUserModelId = "CharetteAIGroup.saeCalculator"
 windowTitle = appName
-defaultWindowWidth = 800
-defaultWindowHeight = 600
+# Phone-like portrait proportions to match the keypad design.
+defaultWindowWidth = 340
+defaultWindowHeight = 620

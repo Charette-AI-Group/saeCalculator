@@ -4,36 +4,39 @@ from __future__ import annotations
 
 import datetime
 
-from PySide6.QtGui import QAction, QKeySequence
+from PySide6.QtCore import QSettings, Qt
+from PySide6.QtGui import QAction, QActionGroup, QIcon, QKeySequence, QPixmap
 from PySide6.QtWidgets import (
+    QLabel,
     QMainWindow,
     QMessageBox,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
 )
 
 from saeCalculator import appConfig
+from saeCalculator.ui import theme
+from saeCalculator.ui.calculatorWidget import CalculatorWidget
 
 
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle(appConfig.windowTitle)
+        self.setWindowIcon(QIcon(str(appConfig.iconPngPath)))
         self.resize(appConfig.defaultWindowWidth, appConfig.defaultWindowHeight)
 
         self.buildMenuBar()
         self.statusBar().showMessage("Ready")
 
-        self.greetButton = QPushButton("Say Hello")
-        self.greetButton.clicked.connect(self.onGreetClicked)
+        year = datetime.date.today().year
+        self.copyrightLabel = QLabel(f"© {year} {appConfig.copyrightHolder}")
+        self.copyrightLabel.setObjectName("copyrightLabel")
+        self.statusBar().addPermanentWidget(self.copyrightLabel)
 
-        centralWidget = QWidget()
-        layout = QVBoxLayout(centralWidget)
-        layout.addWidget(self.greetButton)
-        layout.addStretch()
+        self.calculatorWidget = CalculatorWidget()
+        self.setCentralWidget(self.calculatorWidget)
+        self.calculatorWidget.setFocus()
 
-        self.setCentralWidget(centralWidget)
+        self.applyTheme(self.loadThemeMode())
 
     def buildMenuBar(self) -> None:
         # Menus are kept as attributes: features can extend them later, and it
@@ -62,11 +65,45 @@ class MainWindow(QMainWindow):
         self.exitAction.triggered.connect(self.close)
         fileMenu.addAction(self.exitAction)
 
+        optionsMenu = self.optionsMenu = self.menuBar().addMenu("&Options")
+
+        self.themeActionGroup = QActionGroup(self)
+        self.themeActionGroup.setExclusive(True)
+
+        self.lightModeAction = QAction("&Light Mode", self)
+        self.lightModeAction.setCheckable(True)
+        self.lightModeAction.triggered.connect(lambda checked=False: self.onThemeSelected("light"))
+        self.themeActionGroup.addAction(self.lightModeAction)
+        optionsMenu.addAction(self.lightModeAction)
+
+        self.darkModeAction = QAction("&Dark Mode", self)
+        self.darkModeAction.setCheckable(True)
+        self.darkModeAction.triggered.connect(lambda checked=False: self.onThemeSelected("dark"))
+        self.themeActionGroup.addAction(self.darkModeAction)
+        optionsMenu.addAction(self.darkModeAction)
+
         helpMenu = self.helpMenu = self.menuBar().addMenu("&Help")
 
         self.aboutAction = QAction("&About", self)
         self.aboutAction.triggered.connect(self.onHelpAbout)
         helpMenu.addAction(self.aboutAction)
+
+    def loadThemeMode(self) -> str:
+        settings = QSettings(appConfig.organizationName, appConfig.appName)
+        mode = str(settings.value("ui/themeMode", theme.defaultThemeMode))
+        return mode if mode in theme.themeModes else theme.defaultThemeMode
+
+    def applyTheme(self, mode: str) -> None:
+        self.currentThemeMode = mode
+        self.setStyleSheet(theme.windowStyleSheet(mode))
+        self.calculatorWidget.applyTheme(mode)
+        self.lightModeAction.setChecked(mode == "light")
+        self.darkModeAction.setChecked(mode == "dark")
+
+    def onThemeSelected(self, mode: str) -> None:
+        self.applyTheme(mode)
+        settings = QSettings(appConfig.organizationName, appConfig.appName)
+        settings.setValue("ui/themeMode", mode)
 
     # Placeholder slots — replace the bodies with your app's file handling.
     def onFileNew(self) -> None:
@@ -88,13 +125,20 @@ class MainWindow(QMainWindow):
             f"<p>&copy; {year} {appConfig.copyrightHolder}</p>"
         )
 
-    def onHelpAbout(self) -> None:
+    def buildAboutBox(self) -> QMessageBox:
         aboutBox = QMessageBox(self)
         aboutBox.setWindowTitle(f"About {appConfig.appName}")
         aboutBox.setText(self.buildAboutText())
-        # QMessageBox ignores resize/setMinimumWidth; widening its label works.
-        aboutBox.setStyleSheet("QLabel { min-width: 420px; }")
-        aboutBox.exec()
+        iconPixmap = QPixmap(str(appConfig.iconPngPath)).scaled(
+            64, 64,
+            Qt.AspectRatioMode.KeepAspectRatio,
+            Qt.TransformationMode.SmoothTransformation,
+        )
+        aboutBox.setIconPixmap(iconPixmap)
+        # QMessageBox ignores resize; sizing its text label (only — not every
+        # QLabel, or the icon label inflates too) matches the app's width.
+        aboutBox.setStyleSheet("QLabel#qt_msgbox_label { min-width: 240px; }")
+        return aboutBox
 
-    def onGreetClicked(self) -> None:
-        self.statusBar().showMessage("Hello from SAE Fractional Calculator")
+    def onHelpAbout(self) -> None:
+        self.buildAboutBox().exec()
