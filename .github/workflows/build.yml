@@ -1,0 +1,54 @@
+# Builds the standalone app on every push (and on demand via the Actions tab).
+# Windows -> saeCalculator.exe, macOS (Apple Silicon) -> saeCalculator.app.
+# Download the results from the run's "Artifacts" section on GitHub.
+
+name: build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            artifactName: saeCalculator-windows
+            artifactPath: dist/saeCalculator.exe
+          - os: macos-latest
+            artifactName: saeCalculator-macos-appleSilicon
+            artifactPath: dist/saeCalculator-macos.zip
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install app and build dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install ".[build]"
+
+      - name: Build with PyInstaller
+        run: python -m PyInstaller saeCalculator.spec --noconfirm
+
+      # upload-artifact does not preserve macOS bundle structure/permissions,
+      # so zip the .app first (ditto keeps executable bits and symlinks).
+      - name: Zip macOS app bundle
+        if: runner.os == 'macOS'
+        run: ditto -c -k --keepParent "dist/saeCalculator.app" "dist/saeCalculator-macos.zip"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifactName }}
+          path: ${{ matrix.artifactPath }}
+          if-no-files-found: error
