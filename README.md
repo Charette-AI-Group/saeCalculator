@@ -76,6 +76,29 @@ Notes for sharing:
 - The theme preference is stored per user in the registry, so it persists
   for whoever runs it.
 
+## Automated builds (Windows + macOS)
+
+Every push to GitHub builds the app for both platforms via GitHub Actions
+(`.github/workflows/build.yml`); a build can also be started manually from
+the repo's Actions tab ("Run workflow"). Download from the run page, under
+"Artifacts":
+
+- `saeCalculator-windows` — `saeCalculator.exe`
+- `saeCalculator-macos-appleSilicon` — `saeCalculator.app` for Apple Silicon
+  Macs (M1 or newer, ~2021+); it does not run on Intel Macs
+
+Artifacts expire after 90 days; rerun the workflow to rebuild.
+
+Notes for the macOS app:
+- The artifact download unzips twice: GitHub wraps it in a zip that contains
+  `saeCalculator-macos.zip`, which contains `saeCalculator.app`.
+- The app is unsigned, so on first launch right-click it > "Open" (don't
+  double-click). If macOS instead claims the app "is damaged", it isn't —
+  that's Gatekeeper quarantining an unsigned download. Clear it in Terminal
+  with `xattr -cr path/to/saeCalculator.app`, then launch normally. Proper
+  signing/notarization needs an Apple Developer account; skip it for
+  personal use.
+
 ## Tests and lint
 
 ```powershell
