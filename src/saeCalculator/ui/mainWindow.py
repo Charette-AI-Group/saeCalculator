@@ -5,7 +5,7 @@ from __future__ import annotations
 import datetime
 
 from PySide6.QtCore import QSettings, Qt
-from PySide6.QtGui import QAction, QActionGroup, QIcon, QKeySequence, QPixmap
+from PySide6.QtGui import QAction, QActionGroup, QIcon, QPixmap
 from PySide6.QtWidgets import (
     QLabel,
     QMainWindow,
@@ -41,30 +41,6 @@ class MainWindow(QMainWindow):
     def buildMenuBar(self) -> None:
         # Menus are kept as attributes: features can extend them later, and it
         # prevents the Python wrappers from being garbage-collected.
-        fileMenu = self.fileMenu = self.menuBar().addMenu("&File")
-
-        self.newAction = QAction("&New", self)
-        self.newAction.setShortcut(QKeySequence.StandardKey.New)
-        self.newAction.triggered.connect(self.onFileNew)
-        fileMenu.addAction(self.newAction)
-
-        self.openAction = QAction("&Open...", self)
-        self.openAction.setShortcut(QKeySequence.StandardKey.Open)
-        self.openAction.triggered.connect(self.onFileOpen)
-        fileMenu.addAction(self.openAction)
-
-        self.saveAction = QAction("&Save", self)
-        self.saveAction.setShortcut(QKeySequence.StandardKey.Save)
-        self.saveAction.triggered.connect(self.onFileSave)
-        fileMenu.addAction(self.saveAction)
-
-        fileMenu.addSeparator()
-
-        self.exitAction = QAction("E&xit", self)
-        self.exitAction.setShortcut(QKeySequence("Ctrl+Q"))
-        self.exitAction.triggered.connect(self.close)
-        fileMenu.addAction(self.exitAction)
-
         optionsMenu = self.optionsMenu = self.menuBar().addMenu("&Options")
 
         self.themeActionGroup = QActionGroup(self)
@@ -104,16 +80,6 @@ class MainWindow(QMainWindow):
         self.applyTheme(mode)
         settings = QSettings(appConfig.organizationName, appConfig.appName)
         settings.setValue("ui/themeMode", mode)
-
-    # Placeholder slots — replace the bodies with your app's file handling.
-    def onFileNew(self) -> None:
-        self.statusBar().showMessage("File > New selected")
-
-    def onFileOpen(self) -> None:
-        self.statusBar().showMessage("File > Open selected")
-
-    def onFileSave(self) -> None:
-        self.statusBar().showMessage("File > Save selected")
 
     def buildAboutText(self) -> str:
         year = datetime.date.today().year

@@ -30,28 +30,10 @@ def testMenuBarStructure(qtbot) -> None:
     qtbot.addWidget(mainWindow)
 
     menuTitles = [action.text() for action in mainWindow.menuBar().actions()]
-    assert menuTitles == ["&File", "&Options", "&Help"]
-
-    fileItems = [a.text() for a in mainWindow.fileMenu.actions() if not a.isSeparator()]
-    assert fileItems == ["&New", "&Open...", "&Save", "E&xit"]
-    assert any(a.isSeparator() for a in mainWindow.fileMenu.actions())
+    assert menuTitles == ["&Options", "&Help"]
 
     assert [a.text() for a in mainWindow.optionsMenu.actions()] == ["&Light Mode", "&Dark Mode"]
     assert [a.text() for a in mainWindow.helpMenu.actions()] == ["&About"]
-
-
-def testFileMenuPlaceholdersUpdateStatus(qtbot) -> None:
-    mainWindow = MainWindow()
-    qtbot.addWidget(mainWindow)
-
-    mainWindow.newAction.trigger()
-    assert mainWindow.statusBar().currentMessage() == "File > New selected"
-
-    mainWindow.openAction.trigger()
-    assert mainWindow.statusBar().currentMessage() == "File > Open selected"
-
-    mainWindow.saveAction.trigger()
-    assert mainWindow.statusBar().currentMessage() == "File > Save selected"
 
 
 def testThemeSwitching(qtbot) -> None:
