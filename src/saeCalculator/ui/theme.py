@@ -30,6 +30,8 @@ lightColors = {
     "menuBackground": "#f4f3ef",
     "menuText": "#1f1e1b",
     "menuSelected": "#e2e0da",
+    "switchTrackOff": "#b9b7af",
+    "switchTrackOn": "#185fa5",
 }
 
 darkColors = {
@@ -55,6 +57,8 @@ darkColors = {
     "menuBackground": "#22211f",
     "menuText": "#f0eee8",
     "menuSelected": "#3a3936",
+    "switchTrackOff": "#5f5e5a",
+    "switchTrackOn": "#378add",
 }
 
 themeColors = {"light": lightColors, "dark": darkColors}
@@ -68,6 +72,7 @@ CalculatorWidget { background: $windowBackground; }
 }
 #expressionLabel { color: $expressionText; }
 #currentLabel { color: $displayText; }
+#themeIconLight, #themeIconDark { color: $operatorText; font-size: 14px; }
 QPushButton {
     background: $buttonBackground;
     color: $buttonText;

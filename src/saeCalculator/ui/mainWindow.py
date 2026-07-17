@@ -5,7 +5,7 @@ from __future__ import annotations
 import datetime
 
 from PySide6.QtCore import QSettings, Qt
-from PySide6.QtGui import QAction, QActionGroup, QIcon, QPixmap
+from PySide6.QtGui import QAction, QIcon, QPixmap
 from PySide6.QtWidgets import (
     QLabel,
     QMainWindow,
@@ -37,27 +37,11 @@ class MainWindow(QMainWindow):
         self.calculatorWidget.setFocus()
 
         self.applyTheme(self.loadThemeMode())
+        self.calculatorWidget.themeToggle.toggled.connect(self.onThemeToggled)
 
     def buildMenuBar(self) -> None:
         # Menus are kept as attributes: features can extend them later, and it
         # prevents the Python wrappers from being garbage-collected.
-        optionsMenu = self.optionsMenu = self.menuBar().addMenu("&Options")
-
-        self.themeActionGroup = QActionGroup(self)
-        self.themeActionGroup.setExclusive(True)
-
-        self.lightModeAction = QAction("&Light Mode", self)
-        self.lightModeAction.setCheckable(True)
-        self.lightModeAction.triggered.connect(lambda checked=False: self.onThemeSelected("light"))
-        self.themeActionGroup.addAction(self.lightModeAction)
-        optionsMenu.addAction(self.lightModeAction)
-
-        self.darkModeAction = QAction("&Dark Mode", self)
-        self.darkModeAction.setCheckable(True)
-        self.darkModeAction.triggered.connect(lambda checked=False: self.onThemeSelected("dark"))
-        self.themeActionGroup.addAction(self.darkModeAction)
-        optionsMenu.addAction(self.darkModeAction)
-
         helpMenu = self.helpMenu = self.menuBar().addMenu("&Help")
 
         self.aboutAction = QAction("&About", self)
@@ -73,8 +57,9 @@ class MainWindow(QMainWindow):
         self.currentThemeMode = mode
         self.setStyleSheet(theme.windowStyleSheet(mode))
         self.calculatorWidget.applyTheme(mode)
-        self.lightModeAction.setChecked(mode == "light")
-        self.darkModeAction.setChecked(mode == "dark")
+
+    def onThemeToggled(self, checked: bool) -> None:
+        self.onThemeSelected("dark" if checked else "light")
 
     def onThemeSelected(self, mode: str) -> None:
         self.applyTheme(mode)

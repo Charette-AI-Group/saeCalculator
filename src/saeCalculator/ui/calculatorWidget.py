@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QFont, QKeyEvent
+from PySide6.QtGui import QColor, QFont, QKeyEvent
 from PySide6.QtWidgets import (
     QFrame,
     QGridLayout,
+    QHBoxLayout,
     QLabel,
     QPushButton,
     QSizePolicy,
@@ -16,6 +17,7 @@ from PySide6.QtWidgets import (
 
 from saeCalculator.services.calculatorEngine import CalculatorEngine
 from saeCalculator.ui import theme
+from saeCalculator.ui.toggleSwitch import ToggleSwitch
 
 # (label, key, keyClass) — keys are the engine's key strings.
 unitRowKeys = [
@@ -58,6 +60,11 @@ class CalculatorWidget(QWidget):
 
     def applyTheme(self, mode: str) -> None:
         self.setStyleSheet(theme.calculatorStyleSheet(mode))
+        colors = theme.themeColors[mode]
+        self.themeToggle.setTrackColors(
+            QColor(colors["switchTrackOff"]), QColor(colors["switchTrackOn"])
+        )
+        self.themeToggle.setChecked(mode == "dark")
 
     def buildUi(self) -> None:
         rootLayout = QVBoxLayout(self)
@@ -66,10 +73,27 @@ class CalculatorWidget(QWidget):
 
         # Stretch factors let the keypad fill all vertical space below the
         # display; buttons expand (see createButton), so no gap at the bottom.
+        rootLayout.addLayout(self.buildThemeRow())
         rootLayout.addWidget(self.buildDisplay())
         rootLayout.addLayout(self.buildKeyRow(unitRowKeys), 1)
         rootLayout.addLayout(self.buildKeyRow(fractionRowKeys), 1)
         rootLayout.addLayout(self.buildMainGrid(), 6)
+
+    def buildThemeRow(self) -> QHBoxLayout:
+        lightIcon = QLabel("☀")
+        lightIcon.setObjectName("themeIconLight")
+        self.themeToggle = ToggleSwitch()
+        self.themeToggle.setToolTip("Switch between light and dark mode")
+        darkIcon = QLabel("☾")
+        darkIcon.setObjectName("themeIconDark")
+
+        themeRow = QHBoxLayout()
+        themeRow.setSpacing(6)
+        themeRow.addWidget(lightIcon)
+        themeRow.addWidget(self.themeToggle)
+        themeRow.addWidget(darkIcon)
+        themeRow.addStretch()
+        return themeRow
 
     def buildDisplay(self) -> QFrame:
         displayFrame = QFrame()

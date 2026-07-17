@@ -30,9 +30,8 @@ def testMenuBarStructure(qtbot) -> None:
     qtbot.addWidget(mainWindow)
 
     menuTitles = [action.text() for action in mainWindow.menuBar().actions()]
-    assert menuTitles == ["&Options", "&Help"]
+    assert menuTitles == ["&Help"]
 
-    assert [a.text() for a in mainWindow.optionsMenu.actions()] == ["&Light Mode", "&Dark Mode"]
     assert [a.text() for a in mainWindow.helpMenu.actions()] == ["&About"]
 
 
@@ -41,17 +40,16 @@ def testThemeSwitching(qtbot) -> None:
     qtbot.addWidget(mainWindow)
     originalMode = mainWindow.currentThemeMode
 
+    themeToggle = mainWindow.calculatorWidget.themeToggle
     try:
-        mainWindow.darkModeAction.trigger()
+        themeToggle.setChecked(True)
         assert mainWindow.currentThemeMode == "dark"
-        assert mainWindow.darkModeAction.isChecked()
-        assert not mainWindow.lightModeAction.isChecked()
         assert "#22211f" in mainWindow.styleSheet()
         assert "#22211f" in mainWindow.calculatorWidget.styleSheet()
 
-        mainWindow.lightModeAction.trigger()
+        themeToggle.setChecked(False)
         assert mainWindow.currentThemeMode == "light"
-        assert mainWindow.lightModeAction.isChecked()
+        assert not themeToggle.isChecked()
         assert "#f4f3ef" in mainWindow.calculatorWidget.styleSheet()
     finally:
         # Theme choice persists via QSettings; restore the user's setting.
