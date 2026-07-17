@@ -13,7 +13,6 @@ def testMainWindowOpens(qtbot) -> None:
 
     assert mainWindow.isVisible()
     assert mainWindow.windowTitle() == "SAE Fractional Calculator"
-    assert mainWindow.statusBar().currentMessage() == "Ready"
     assert not mainWindow.windowIcon().isNull()
 
 
@@ -80,12 +79,3 @@ def testAboutTextContents(qtbot) -> None:
     assert "Editor: Francois Charette" in aboutText
     assert "AI Agent: Claude - Fable 5" in aboutText
     assert "Charette AI Group, LLC" in aboutText
-
-
-def testCopyrightShownInStatusBar(qtbot) -> None:
-    mainWindow = MainWindow()
-    qtbot.addWidget(mainWindow)
-
-    assert mainWindow.copyrightLabel.parent() is mainWindow.statusBar()
-    assert "©" in mainWindow.copyrightLabel.text()
-    assert "Charette AI Group, LLC" in mainWindow.copyrightLabel.text()

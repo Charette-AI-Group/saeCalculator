@@ -7,7 +7,6 @@ import datetime
 from PySide6.QtCore import QSettings, Qt
 from PySide6.QtGui import QAction, QIcon, QPixmap
 from PySide6.QtWidgets import (
-    QLabel,
     QMainWindow,
     QMessageBox,
 )
@@ -25,12 +24,6 @@ class MainWindow(QMainWindow):
         self.resize(appConfig.defaultWindowWidth, appConfig.defaultWindowHeight)
 
         self.buildMenuBar()
-        self.statusBar().showMessage("Ready")
-
-        year = datetime.date.today().year
-        self.copyrightLabel = QLabel(f"© {year} {appConfig.copyrightHolder}")
-        self.copyrightLabel.setObjectName("copyrightLabel")
-        self.statusBar().addPermanentWidget(self.copyrightLabel)
 
         self.calculatorWidget = CalculatorWidget()
         self.setCentralWidget(self.calculatorWidget)

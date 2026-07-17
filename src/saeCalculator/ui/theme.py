@@ -109,8 +109,6 @@ QMenuBar::item:selected { background: $menuSelected; }
 QMenu { background: $menuBackground; color: $menuText; border: 1px solid $displayBorder; }
 QMenu::item { padding: 4px 24px; }
 QMenu::item:selected { background: $menuSelected; }
-QStatusBar { background: $menuBackground; color: $expressionText; }
-#copyrightLabel { color: $expressionText; font-size: 10px; padding-right: 4px; }
 """
 
 
