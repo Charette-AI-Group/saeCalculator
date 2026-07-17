@@ -94,6 +94,10 @@ QPushButton[keyClass="fraction"] {
     background: $fractionBackground; color: $fractionText; border-color: $fractionBorder;
 }
 QPushButton[keyClass="fraction"]:pressed { background: $fractionPressed; }
+QPushButton[keyClass="company"] {
+    background: transparent; border: none; min-height: 0px; padding: 0; border-radius: 8px;
+}
+QPushButton[keyClass="company"]:hover { background: $buttonPressed; }
 QPushButton[keyClass="equals"] {
     background: $equalsBackground; color: $equalsText; border-color: $equalsBackground;
     font-weight: 600; font-size: 27px;
@@ -103,12 +107,6 @@ QPushButton[keyClass="equals"]:pressed { background: $equalsPressed; }
 
 windowTemplate = """
 QMainWindow { background: $windowBackground; }
-QMenuBar { background: $menuBackground; color: $menuText; }
-QMenuBar::item { background: transparent; padding: 4px 10px; }
-QMenuBar::item:selected { background: $menuSelected; }
-QMenu { background: $menuBackground; color: $menuText; border: 1px solid $displayBorder; }
-QMenu::item { padding: 4px 24px; }
-QMenu::item:selected { background: $menuSelected; }
 """
 
 

@@ -17,6 +17,10 @@ projectRoot = Path(__file__).resolve().parents[2]
 resourcesDir = Path(__file__).resolve().parent / "resources"
 iconPngPath = resourcesDir / "icon.png"
 iconIcoPath = resourcesDir / "icon.ico"
+companyMarkPaths = {
+    "light": resourcesDir / "companyMarkLight.png",
+    "dark": resourcesDir / "companyMarkDark.png",
+}
 
 # Distinct taskbar identity on Windows (otherwise the Python icon shows).
 appUserModelId = "CharetteAIGroup.saeCalculator"

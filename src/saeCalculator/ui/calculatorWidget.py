@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QColor, QFont, QKeyEvent
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QColor, QFont, QIcon, QKeyEvent
 from PySide6.QtWidgets import (
     QFrame,
     QGridLayout,
@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from saeCalculator import appConfig
 from saeCalculator.services.calculatorEngine import CalculatorEngine
 from saeCalculator.ui import theme
 from saeCalculator.ui.toggleSwitch import ToggleSwitch
@@ -65,6 +66,7 @@ class CalculatorWidget(QWidget):
             QColor(colors["switchTrackOff"]), QColor(colors["switchTrackOn"])
         )
         self.themeToggle.setChecked(mode == "dark")
+        self.companyButton.setIcon(QIcon(str(appConfig.companyMarkPaths[mode])))
 
     def buildUi(self) -> None:
         rootLayout = QVBoxLayout(self)
@@ -87,12 +89,21 @@ class CalculatorWidget(QWidget):
         darkIcon = QLabel("☾")
         darkIcon.setObjectName("themeIconDark")
 
+        self.companyButton = QPushButton()
+        self.companyButton.setProperty("keyClass", "company")
+        self.companyButton.setToolTip(f"About {appConfig.appName}")
+        self.companyButton.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.companyButton.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.companyButton.setIconSize(QSize(26, 26))
+        self.companyButton.setFixedSize(32, 32)
+
         themeRow = QHBoxLayout()
         themeRow.setSpacing(6)
         themeRow.addWidget(lightIcon)
         themeRow.addWidget(self.themeToggle)
         themeRow.addWidget(darkIcon)
         themeRow.addStretch()
+        themeRow.addWidget(self.companyButton)
         return themeRow
 
     def buildDisplay(self) -> QFrame:

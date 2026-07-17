@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from PySide6.QtCore import Qt
+
 from saeCalculator.ui.calculatorWidget import CalculatorWidget
 from saeCalculator.ui.mainWindow import MainWindow
 
@@ -24,14 +26,30 @@ def testCalculatorIsCentralWidget(qtbot) -> None:
     assert mainWindow.centralWidget() is mainWindow.calculatorWidget
 
 
-def testMenuBarStructure(qtbot) -> None:
+def testNoMenuBarShown(qtbot) -> None:
     mainWindow = MainWindow()
     qtbot.addWidget(mainWindow)
 
-    menuTitles = [action.text() for action in mainWindow.menuBar().actions()]
-    assert menuTitles == ["&Help"]
+    assert not mainWindow.menuBar().actions()
 
-    assert [a.text() for a in mainWindow.helpMenu.actions()] == ["&About"]
+
+def testCompanyButtonOpensAbout(qtbot, monkeypatch) -> None:
+    mainWindow = MainWindow()
+    qtbot.addWidget(mainWindow)
+    mainWindow.show()
+
+    execCalls = []
+
+    class FakeAboutBox:
+        def exec(self) -> None:
+            execCalls.append(True)
+
+    monkeypatch.setattr(mainWindow, "buildAboutBox", lambda: FakeAboutBox())
+    companyButton = mainWindow.calculatorWidget.companyButton
+    assert not companyButton.icon().isNull()
+
+    qtbot.mouseClick(companyButton, Qt.MouseButton.LeftButton)
+    assert execCalls == [True]
 
 
 def testThemeSwitching(qtbot) -> None:
