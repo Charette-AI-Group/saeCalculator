@@ -102,7 +102,10 @@ class CalculatorWidget(QWidget):
         self.donateButton.setToolTip("Support development via PayPal")
         self.donateButton.setCursor(Qt.CursorShape.PointingHandCursor)
         self.donateButton.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        self.donateButton.setFixedHeight(28)
+        # Height comes from the stylesheet (min/max 30px there): a QSS
+        # min-height of 0 would wipe out setFixedHeight's minimum, letting
+        # the button collapse below 2x the corner radius — and Qt drops
+        # border-radius entirely when it exceeds half the height.
         self.donateButton.clicked.connect(self.onDonateClicked)
 
         themeRow = QHBoxLayout()

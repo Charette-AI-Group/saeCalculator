@@ -106,7 +106,7 @@ QPushButton[keyClass="company"] {
 QPushButton[keyClass="company"]:hover { background: $buttonPressed; }
 QPushButton[keyClass="donate"] {
     background: $donateBackground; color: $donateText; border: none;
-    min-height: 0px; border-radius: 14px; padding: 0 14px;
+    min-height: 30px; max-height: 30px; border-radius: 14px; padding: 0 14px;
     font-size: 14px; font-weight: 600;
 }
 QPushButton[keyClass="donate"]:hover { background: $donatePressed; }
