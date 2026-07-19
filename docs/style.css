@@ -1,0 +1,233 @@
+/* Palettes mirror src/saeCalculator/ui/theme.py — keep them in sync. */
+:root {
+  --windowBackground: #f4f3ef;
+  --displayBackground: #ffffff;
+  --displayBorder: #d5d3cb;
+  --expressionText: #8a887c;
+  --displayText: #1f1e1b;
+  --buttonBackground: #ffffff;
+  --buttonText: #1f1e1b;
+  --buttonBorder: #d5d3cb;
+  --buttonPressed: #e9e7e1;
+  --operatorText: #5f5e5a;
+  --unitBorder: #b9b7af;
+  --clearText: #a32d2d;
+  --fractionBackground: #e6f1fb;
+  --fractionText: #185fa5;
+  --fractionBorder: #b5d4f4;
+  --fractionPressed: #cfe3f6;
+  --equalsBackground: #2c2c2a;
+  --equalsText: #ffffff;
+  --equalsPressed: #444441;
+  --switchTrackOff: #b9b7af;
+  --switchTrackOn: #185fa5;
+  --donateBackground: #f0b232;
+  --donateText: #1f1e1b;
+  --donatePressed: #d9991f;
+  --linkColor: #185fa5;
+}
+
+:root[data-theme="dark"] {
+  --windowBackground: #22211f;
+  --displayBackground: #2c2b29;
+  --displayBorder: #454440;
+  --expressionText: #98968a;
+  --displayText: #f0eee8;
+  --buttonBackground: #32312e;
+  --buttonText: #f0eee8;
+  --buttonBorder: #454440;
+  --buttonPressed: #454440;
+  --operatorText: #b4b2a9;
+  --unitBorder: #5f5e5a;
+  --clearText: #f09595;
+  --fractionBackground: #0c344f;
+  --fractionText: #85b7eb;
+  --fractionBorder: #185fa5;
+  --fractionPressed: #10456a;
+  --equalsBackground: #e9e7e1;
+  --equalsText: #1f1e1b;
+  --equalsPressed: #cfcdc5;
+  --switchTrackOff: #5f5e5a;
+  --switchTrackOn: #378add;
+  --linkColor: #85b7eb;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--windowBackground);
+  color: var(--displayText);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+a { color: var(--linkColor); }
+
+.siteHeader { text-align: center; padding: 28px 16px 8px; }
+.siteHeader .appIcon { width: 64px; height: 64px; }
+.siteHeader h1 { font-size: 26px; margin: 10px 0 6px; }
+.tagline { color: var(--operatorText); max-width: 420px; margin: 0 auto; }
+
+/* Calculator card — sized and styled to match the desktop app window. */
+.calculator {
+  width: min(342px, 94vw);
+  background: var(--windowBackground);
+  border: 1px solid var(--displayBorder);
+  border-radius: 16px;
+  padding: 14px;
+  margin: 20px auto;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+  user-select: none;
+}
+
+.themeRow { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+.themeRow .spacer { flex: 1; }
+.themeIcon { color: var(--operatorText); font-size: 14px; }
+
+.toggleSwitch {
+  width: 46px; height: 24px;
+  border: none; border-radius: 12px;
+  background: var(--switchTrackOff);
+  position: relative; cursor: pointer; padding: 0;
+  transition: background 120ms;
+}
+.toggleSwitch .knob {
+  position: absolute; top: 3px; left: 3px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: #ffffff;
+  transition: left 120ms;
+}
+.toggleSwitch[aria-checked="true"] { background: var(--switchTrackOn); }
+.toggleSwitch[aria-checked="true"] .knob { left: 25px; }
+
+.donateButton {
+  height: 28px; border: none; border-radius: 14px;
+  padding: 0 14px;
+  background: var(--donateBackground); color: var(--donateText);
+  font-size: 14px; font-weight: 600; font-family: inherit;
+  cursor: pointer;
+}
+.donateButton:hover, .donateButton:active { background: var(--donatePressed); }
+
+.companyButton {
+  width: 32px; height: 32px;
+  border: none; border-radius: 8px;
+  background: transparent; padding: 0;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.companyButton:hover { background: var(--buttonPressed); }
+.companyButton img { width: 26px; height: 26px; display: block; }
+
+.display {
+  background: var(--displayBackground);
+  border: 1px solid var(--displayBorder);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: right;
+  margin-bottom: 8px;
+  font-family: Consolas, "Cascadia Mono", Menlo, monospace;
+}
+.expression {
+  color: var(--expressionText);
+  font-size: 13px; min-height: 18px;
+  overflow: hidden; white-space: nowrap;
+}
+.current { color: var(--displayText); font-size: 28px; font-weight: 600; min-height: 36px; }
+
+.unitRow, .fractionRow, .mainGrid { display: grid; gap: 8px; margin-bottom: 8px; }
+.unitRow { grid-template-columns: repeat(4, 1fr); }
+.fractionRow { grid-template-columns: repeat(5, 1fr); }
+.mainGrid { grid-template-columns: repeat(4, 1fr); margin-bottom: 0; }
+
+.key {
+  background: var(--buttonBackground);
+  color: var(--buttonText);
+  border: 1px solid var(--buttonBorder);
+  border-radius: 10px;
+  height: 52px;
+  font-size: 21px; font-family: inherit;
+  cursor: pointer;
+}
+.key:active { background: var(--buttonPressed); }
+.unitKey { height: 44px; font-size: 17px; font-weight: 600; border-color: var(--unitBorder); }
+.clearKey { color: var(--clearText); }
+.fractionKey {
+  height: 42px; font-size: 17px;
+  background: var(--fractionBackground);
+  color: var(--fractionText);
+  border-color: var(--fractionBorder);
+}
+.fractionKey:active { background: var(--fractionPressed); }
+.operatorKey { color: var(--operatorText); font-size: 23px; }
+.equalsKey {
+  grid-column: 1 / -1;
+  height: 56px; font-size: 27px; font-weight: 600;
+  background: var(--equalsBackground);
+  color: var(--equalsText);
+  border-color: var(--equalsBackground);
+}
+.equalsKey:active { background: var(--equalsPressed); }
+
+.downloads { text-align: center; padding: 8px 16px 4px; color: var(--operatorText); }
+.downloadButtons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.siteButton {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--unitBorder);
+  color: var(--buttonText);
+  text-decoration: none;
+  font-weight: 600;
+}
+.siteButton.primary {
+  background: var(--switchTrackOn);
+  border-color: var(--switchTrackOn);
+  color: #ffffff;
+}
+.hint { font-size: 13px; max-width: 420px; margin: 14px auto 0; }
+.hint code {
+  background: var(--buttonPressed);
+  padding: 1px 5px; border-radius: 4px;
+  font-family: Consolas, "Cascadia Mono", Menlo, monospace;
+}
+
+.siteFooter { margin-top: auto; padding: 24px 16px; font-size: 13px; color: var(--operatorText); }
+
+.modalOverlay {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10;
+}
+.modalOverlay.hidden { display: none; }
+.modal {
+  background: var(--displayBackground);
+  border: 1px solid var(--displayBorder);
+  border-radius: 12px;
+  padding: 20px;
+  width: min(340px, 90vw);
+}
+.modal h3 { margin: 8px 0 4px; }
+.modal p { margin: 6px 0; font-size: 14px; }
+.modal .muted { color: var(--expressionText); }
+.modalButtons { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+.modalButton {
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--unitBorder);
+  background: var(--buttonBackground);
+  color: var(--buttonText);
+  font-family: inherit; font-size: 14px; font-weight: 600;
+  cursor: pointer;
+}
+.modalButton:active { background: var(--buttonPressed); }
+.modalButton.primary {
+  background: var(--switchTrackOn);
+  border-color: var(--switchTrackOn);
+  color: #ffffff;
+}

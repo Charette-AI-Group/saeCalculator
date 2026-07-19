@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+    content="Feet-inch fraction calculator for DIY and construction. Exact math on a 1/32 inch grid, right in your browser — or download the free desktop app.">
+  <title>SAE Fractional Calculator</title>
+  <link rel="icon" type="image/png" href="icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header class="siteHeader">
+    <img class="appIcon" src="icon.png" alt="SAE Fractional Calculator icon">
+    <h1>SAE Fractional Calculator</h1>
+    <p class="tagline">Yards, feet, inches, and fractions on an exact 1/32&Prime; grid.
+      Try it right here &mdash; it is the full calculator.</p>
+  </header>
+
+  <main>
+    <div class="calculator" id="calculator">
+      <div class="themeRow">
+        <span class="themeIcon">&#9728;</span>
+        <button id="themeToggle" class="toggleSwitch" role="switch" aria-checked="false"
+          aria-label="Dark mode"><span class="knob"></span></button>
+        <span class="themeIcon">&#9790;</span>
+        <div class="spacer"></div>
+        <button id="donateButton" class="donateButton" title="Support development via PayPal">&#9829; Donate</button>
+        <div class="spacer"></div>
+        <button id="companyButton" class="companyButton" title="About SAE Fractional Calculator">
+          <img id="companyMark" src="companyMarkLight.svg" alt="Charette AI Group">
+        </button>
+      </div>
+
+      <div class="display">
+        <div id="expression" class="expression"></div>
+        <div id="current" class="current">0&Prime;</div>
+      </div>
+
+      <div class="unitRow">
+        <button data-k="C" class="key unitKey clearKey">C</button>
+        <button data-k="yd" class="key unitKey">yd</button>
+        <button data-k="ft" class="key unitKey">ft</button>
+        <button data-k="in" class="key unitKey">in</button>
+      </div>
+
+      <div class="fractionRow">
+        <button data-k="f2" class="key fractionKey">/2</button>
+        <button data-k="f4" class="key fractionKey">/4</button>
+        <button data-k="f8" class="key fractionKey">/8</button>
+        <button data-k="f16" class="key fractionKey">/16</button>
+        <button data-k="f32" class="key fractionKey">/32</button>
+      </div>
+
+      <div class="mainGrid">
+        <button data-k="7" class="key">7</button>
+        <button data-k="8" class="key">8</button>
+        <button data-k="9" class="key">9</button>
+        <button data-k="op/" class="key operatorKey">&divide;</button>
+        <button data-k="4" class="key">4</button>
+        <button data-k="5" class="key">5</button>
+        <button data-k="6" class="key">6</button>
+        <button data-k="op*" class="key operatorKey">&times;</button>
+        <button data-k="1" class="key">1</button>
+        <button data-k="2" class="key">2</button>
+        <button data-k="3" class="key">3</button>
+        <button data-k="op-" class="key operatorKey">&minus;</button>
+        <button data-k="0" class="key">0</button>
+        <button data-k="." class="key">.</button>
+        <button data-k="B" class="key" aria-label="Backspace">&#9003;</button>
+        <button data-k="op+" class="key operatorKey">+</button>
+        <button data-k="eq" class="key equalsKey">=</button>
+      </div>
+    </div>
+
+    <section class="downloads">
+      <p>Prefer a desktop app? Same calculator, offline.</p>
+      <p class="downloadButtons">
+        <a class="siteButton primary" href="https://github.com/Charette-AI-Group/saeCalculator/releases/latest">
+          Download for Windows / macOS</a>
+        <a class="siteButton" href="https://github.com/Charette-AI-Group/saeCalculator">Source on GitHub</a>
+      </p>
+      <p class="hint">Tip: the keyboard works too &mdash; digits, <code>+ - * /</code>, Enter,
+        Backspace, Esc, and <code>y</code> / <code>f</code> / <code>i</code> (or <code>'</code> and
+        <code>"</code>) for units.</p>
+    </section>
+  </main>
+
+  <footer class="siteFooter">
+    <p>&copy; <span id="footerYear"></span> Charette AI Group, LLC &middot;
+      <a href="https://github.com/Charette-AI-Group">github.com/Charette-AI-Group</a></p>
+  </footer>
+
+  <div id="modalOverlay" class="modalOverlay hidden">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div id="modalBody"></div>
+      <div id="modalButtons" class="modalButtons"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
