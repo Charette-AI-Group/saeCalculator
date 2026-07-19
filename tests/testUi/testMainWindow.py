@@ -44,6 +44,12 @@ def testCompanyButtonOpensAbout(qtbot, monkeypatch) -> None:
         def exec(self) -> None:
             execCalls.append(True)
 
+        def addButton(self, text, role) -> object:
+            return object()
+
+        def clickedButton(self) -> None:
+            return None
+
     monkeypatch.setattr(mainWindow, "buildAboutBox", lambda: FakeAboutBox())
     companyButton = mainWindow.calculatorWidget.companyButton
     assert not companyButton.icon().isNull()
@@ -85,6 +91,75 @@ def testThemeModePersistsAcrossWindows(qtbot) -> None:
         assert secondWindow.currentThemeMode == "dark"
     finally:
         firstWindow.onThemeSelected(originalMode)
+
+
+def testMarkDonatedHidesButtonAndPersists(qtbot, monkeypatch) -> None:
+    from PySide6.QtCore import QSettings
+
+    from saeCalculator import appConfig
+    from saeCalculator.ui import mainWindow as mainWindowModule
+
+    monkeypatch.setattr(
+        mainWindowModule.QMessageBox, "information", staticmethod(lambda *args: None)
+    )
+    firstWindow = MainWindow()
+    qtbot.addWidget(firstWindow)
+    originallyDonated = firstWindow.donated
+
+    try:
+        firstWindow.markDonated()
+        assert firstWindow.donated
+        assert not firstWindow.calculatorWidget.donateButton.isVisible()
+
+        secondWindow = MainWindow()
+        qtbot.addWidget(secondWindow)
+        assert secondWindow.donated
+        assert secondWindow.calculatorWidget.donateButton.isHidden()
+    finally:
+        settings = QSettings(appConfig.organizationName, appConfig.appName)
+        settings.setValue("support/donated", originallyDonated)
+
+
+def testDonateClickArmsReturnPrompt(qtbot, monkeypatch) -> None:
+    from saeCalculator.ui import calculatorWidget as calculatorWidgetModule
+
+    monkeypatch.setattr(
+        calculatorWidgetModule.QDesktopServices, "openUrl", staticmethod(lambda url: True)
+    )
+    mainWindow = MainWindow()
+    qtbot.addWidget(mainWindow)
+    mainWindow.show()
+    assert not mainWindow.donatePromptPending
+
+    qtbot.mouseClick(mainWindow.calculatorWidget.donateButton, Qt.MouseButton.LeftButton)
+    assert mainWindow.donatePromptPending
+
+
+def testDonationConfirmationYesMarksDonated(qtbot, monkeypatch) -> None:
+    from PySide6.QtCore import QSettings
+
+    from saeCalculator import appConfig
+    from saeCalculator.ui import mainWindow as mainWindowModule
+
+    monkeypatch.setattr(
+        mainWindowModule.QMessageBox,
+        "question",
+        staticmethod(lambda *args: mainWindowModule.QMessageBox.StandardButton.Yes),
+    )
+    monkeypatch.setattr(
+        mainWindowModule.QMessageBox, "information", staticmethod(lambda *args: None)
+    )
+    mainWindow = MainWindow()
+    qtbot.addWidget(mainWindow)
+    originallyDonated = mainWindow.donated
+
+    try:
+        mainWindow.askDonationConfirmation()
+        assert mainWindow.donated
+        assert mainWindow.calculatorWidget.donateButton.isHidden()
+    finally:
+        settings = QSettings(appConfig.organizationName, appConfig.appName)
+        settings.setValue("support/donated", originallyDonated)
 
 
 def testAboutTextContents(qtbot) -> None:
