@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
-from PySide6.QtCore import QSize, Qt
-from PySide6.QtGui import QColor, QFont, QIcon, QKeyEvent
+from PySide6.QtCore import QSize, Qt, QUrl
+from PySide6.QtGui import QColor, QDesktopServices, QFont, QIcon, QKeyEvent
 from PySide6.QtWidgets import (
     QFrame,
     QGridLayout,
@@ -97,14 +97,27 @@ class CalculatorWidget(QWidget):
         self.companyButton.setIconSize(QSize(26, 26))
         self.companyButton.setFixedSize(32, 32)
 
+        self.donateButton = QPushButton("♥ Donate")
+        self.donateButton.setProperty("keyClass", "donate")
+        self.donateButton.setToolTip("Support development via PayPal")
+        self.donateButton.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.donateButton.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.donateButton.setFixedHeight(28)
+        self.donateButton.clicked.connect(self.onDonateClicked)
+
         themeRow = QHBoxLayout()
         themeRow.setSpacing(6)
         themeRow.addWidget(lightIcon)
         themeRow.addWidget(self.themeToggle)
         themeRow.addWidget(darkIcon)
-        themeRow.addStretch()
+        themeRow.addStretch(1)
+        themeRow.addWidget(self.donateButton)
+        themeRow.addStretch(1)
         themeRow.addWidget(self.companyButton)
         return themeRow
+
+    def onDonateClicked(self) -> None:
+        QDesktopServices.openUrl(QUrl(appConfig.donateUrl))
 
     def buildDisplay(self) -> QFrame:
         displayFrame = QFrame()

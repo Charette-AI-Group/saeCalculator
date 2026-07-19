@@ -47,6 +47,25 @@ def testKeyboardEntry(qtbot) -> None:
     assert widget.currentLabel.text() == "5″"
 
 
+def testDonateButtonOpensPaypal(qtbot, monkeypatch) -> None:
+    from saeCalculator import appConfig
+    from saeCalculator.ui import calculatorWidget as calculatorWidgetModule
+
+    widget = CalculatorWidget()
+    qtbot.addWidget(widget)
+    widget.show()
+
+    openedUrls = []
+    monkeypatch.setattr(
+        calculatorWidgetModule.QDesktopServices,
+        "openUrl",
+        staticmethod(lambda url: openedUrls.append(url.toString())),
+    )
+
+    qtbot.mouseClick(widget.donateButton, Qt.MouseButton.LeftButton)
+    assert openedUrls == [appConfig.donateUrl]
+
+
 def testEscapeClears(qtbot) -> None:
     widget = CalculatorWidget()
     qtbot.addWidget(widget)

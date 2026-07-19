@@ -24,6 +24,8 @@ companyMarkPaths = {
 
 # Distinct taskbar identity on Windows (otherwise the Python icon shows).
 appUserModelId = "CharetteAIGroup.saeCalculator"
+
+donateUrl = "https://www.paypal.com/donate/?hosted_button_id=FEM4WLD7LHY36"
 windowTitle = appName
 # Phone-like portrait proportions to match the keypad design.
 defaultWindowWidth = 340

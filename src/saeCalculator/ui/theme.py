@@ -32,6 +32,9 @@ lightColors = {
     "menuSelected": "#e2e0da",
     "switchTrackOff": "#b9b7af",
     "switchTrackOn": "#185fa5",
+    "donateBackground": "#f0b232",
+    "donateText": "#1f1e1b",
+    "donatePressed": "#d9991f",
 }
 
 darkColors = {
@@ -59,6 +62,9 @@ darkColors = {
     "menuSelected": "#3a3936",
     "switchTrackOff": "#5f5e5a",
     "switchTrackOn": "#378add",
+    "donateBackground": "#f0b232",
+    "donateText": "#1f1e1b",
+    "donatePressed": "#d9991f",
 }
 
 themeColors = {"light": lightColors, "dark": darkColors}
@@ -98,6 +104,13 @@ QPushButton[keyClass="company"] {
     background: transparent; border: none; min-height: 0px; padding: 0; border-radius: 8px;
 }
 QPushButton[keyClass="company"]:hover { background: $buttonPressed; }
+QPushButton[keyClass="donate"] {
+    background: $donateBackground; color: $donateText; border: none;
+    min-height: 0px; border-radius: 14px; padding: 0 14px;
+    font-size: 14px; font-weight: 600;
+}
+QPushButton[keyClass="donate"]:hover { background: $donatePressed; }
+QPushButton[keyClass="donate"]:pressed { background: $donatePressed; }
 QPushButton[keyClass="equals"] {
     background: $equalsBackground; color: $equalsText; border-color: $equalsBackground;
     font-weight: 600; font-size: 27px;
