@@ -26,14 +26,8 @@ inkColor = QColor("#1f1e1b")
 icoSizes = [(16, 16), (24, 24), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)]
 
 
-def renderIcon() -> QImage:
-    image = QImage(256, 256, QImage.Format.Format_ARGB32)
-    image.fill(Qt.GlobalColor.transparent)
-
-    painter = QPainter(image)
-    painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-    painter.setRenderHint(QPainter.RenderHint.TextAntialiasing)
-
+def drawTile(painter: QPainter) -> None:
+    """Draw the tile in 256x256 design space onto a prepared painter."""
     tile = QPainterPath()
     tile.addRoundedRect(8, 8, 240, 240, 52, 52)
     painter.fillPath(tile, backgroundColor)
@@ -60,6 +54,33 @@ def renderIcon() -> QImage:
     barPath.addRoundedRect(76, 130, 104, 14, 7, 7)
     painter.fillPath(barPath, inkColor)
 
+
+def newPainter(image: QImage) -> QPainter:
+    painter = QPainter(image)
+    painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+    painter.setRenderHint(QPainter.RenderHint.TextAntialiasing)
+    return painter
+
+
+def renderIcon(size: int = 256) -> QImage:
+    image = QImage(size, size, QImage.Format.Format_ARGB32)
+    image.fill(Qt.GlobalColor.transparent)
+    painter = newPainter(image)
+    painter.scale(size / 256, size / 256)
+    drawTile(painter)
+    painter.end()
+    return image
+
+
+def renderMaskableIcon(size: int = 512) -> QImage:
+    """Full-bleed variant for Android launcher masks: solid background with
+    the tile content shrunk into the central safe zone."""
+    image = QImage(size, size, QImage.Format.Format_ARGB32)
+    image.fill(backgroundColor)
+    painter = newPainter(image)
+    painter.translate(size * 0.1, size * 0.1)
+    painter.scale(size * 0.8 / 256, size * 0.8 / 256)
+    drawTile(painter)
     painter.end()
     return image
 
@@ -75,6 +96,17 @@ def main() -> None:
     Image.open(pngPath).save(icoPath, sizes=icoSizes)
     print(f"wrote {pngPath}")
     print(f"wrote {icoPath}")
+
+    # Home-screen icons for the PWA in docs/.
+    docsDir = resourcesDir.parents[2] / "docs"
+    if docsDir.is_dir():
+        for size in (192, 512):
+            target = docsDir / f"icon-{size}.png"
+            renderIcon(size).save(str(target))
+            print(f"wrote {target}")
+        maskablePath = docsDir / "icon-maskable-512.png"
+        renderMaskableIcon().save(str(maskablePath))
+        print(f"wrote {maskablePath}")
 
 
 if __name__ == "__main__":

@@ -339,3 +339,7 @@ document.addEventListener("keydown", (event) => {
 
 document.getElementById("footerYear").textContent = new Date().getFullYear();
 refreshDisplay();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
