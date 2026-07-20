@@ -2,7 +2,7 @@
 
 /* Offline cache for the PWA. Bump the version when any cached file
    changes so installed clients pick up the new assets. */
-const cacheName = "saeCalculator-v1";
+const cacheName = "saeCalculator-v2";
 const cachedAssets = [
   "./",
   "./index.html",

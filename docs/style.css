@@ -196,6 +196,16 @@ a { color: var(--linkColor); }
   font-family: Consolas, "Cascadia Mono", Menlo, monospace;
 }
 
+.aboutText {
+  max-width: 460px;
+  margin: 8px auto 0;
+  padding: 0 16px;
+  color: var(--operatorText);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.aboutText h2 { color: var(--displayText); font-size: 18px; text-align: center; }
+
 .siteFooter { margin-top: auto; padding: 24px 16px; font-size: 13px; color: var(--operatorText); }
 
 .modalOverlay {
