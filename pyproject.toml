@@ -1,6 +1,6 @@
 [project]
 name = "saeCalculator"
-version = "1.1.0"
+version = "1.2.0"
 description = "Calculator for fractional computation needed during DIY projects (PySide6)"
 requires-python = ">=3.14"
 dependencies = [
