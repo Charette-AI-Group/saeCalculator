@@ -3,7 +3,7 @@
 Calculator for fractional computation needed during DIY projects (PySide6).
 
 Try it in the browser (JS port of the same calculator, in `docs/`):
-https://charette-ai-group.github.io/saeCalculator/
+https://saecalculator.com — installable on phones via Add to Home Screen.
 
 Lengths are entered in yards, feet, inches, and fractions of an inch, and all
 math is done in exact integer counts of 1/32 inch. Results are always shown
