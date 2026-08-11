@@ -208,6 +208,15 @@ a { color: var(--linkColor); }
 
 .siteFooter { margin-top: auto; padding: 24px 16px; font-size: 13px; color: var(--operatorText); }
 
+/* Embed mode (?embed=1): just the calculator, for framing on another site.
+   Nothing here applies to the ordinary page. */
+.embed body { min-height: 0; }
+.embed .siteHeader,
+.embed .downloads,
+.embed .aboutText,
+.embed .siteFooter { display: none; }
+.embed .calculator { margin: 8px auto; }
+
 .modalOverlay {
   position: fixed; inset: 0;
   background: rgba(0, 0, 0, 0.45);

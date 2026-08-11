@@ -35,6 +35,13 @@
   <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#22211f" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="style.css">
+  <script>
+    /* ?embed=1 strips the page chrome so another site can frame the calculator
+       on its own. Set before the body parses, so nothing flashes into view. */
+    if (new URLSearchParams(location.search).has("embed")) {
+      document.documentElement.classList.add("embed");
+    }
+  </script>
 </head>
 
 <body>
