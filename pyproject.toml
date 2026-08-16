@@ -3,6 +3,8 @@ name = "saeCalculator"
 version = "1.2.0"
 description = "Calculator for fractional computation needed during DIY projects (PySide6)"
 requires-python = ">=3.14"
+license = "MIT"
+license-files = ["LICENSE"]
 dependencies = [
     "PySide6>=6.6,<7",
 ]

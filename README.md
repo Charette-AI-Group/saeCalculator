@@ -121,5 +121,9 @@ ruff check src tests
 
 See `AGENTS.md` for architecture and naming conventions (for you and AI agents).
 
+## License
+
+[MIT](LICENSE) — free to use, modify and redistribute, including commercially, provided the copyright notice is kept. The software comes with no warranty.
+
 ---
 *Created from the Qt App Template.*
