@@ -72,6 +72,23 @@ The result is a single shareable file, `dist\saeCalculator.exe` (~45 MB — it
 bundles Python and Qt, so it runs on machines with neither installed). First
 launch is a little slow because the exe unpacks itself to a temp folder.
 
+## Build the Windows installer
+
+```powershell
+python tools/buildInstaller.py
+```
+
+That builds a folder bundle (`dist\saeCalculator\`) and compiles it into
+`dist\saeCalculatorSetup-<version>.exe` — the installed app starts instantly
+because nothing has to be unpacked at launch. The installer is per-user: no
+administrator rights, no UAC prompt, Start menu and optional desktop
+shortcuts, and an entry in Add/Remove Programs. Uninstalling removes the
+application but keeps the theme and donation settings under `HKCU`, so a
+reinstall picks up where you left off.
+
+Needs Inno Setup 6 (`winget install JRSoftware.InnoSetup`). The version and
+the installer name come from `appConfig.appVersion`, never from the `.iss`.
+
 Notes for sharing:
 - Windows SmartScreen may warn on an unsigned exe downloaded from the
   internet ("More info" > "Run anyway"). Sharing over a LAN or USB usually
@@ -86,7 +103,8 @@ Every push to GitHub builds the app for both platforms via GitHub Actions
 the repo's Actions tab ("Run workflow"). Download from the run page, under
 "Artifacts":
 
-- `saeCalculator-windows` — `saeCalculator.exe`
+- `saeCalculator-windows` — `saeCalculatorSetup-<version>.exe` (installer)
+  and `saeCalculator.exe` (single-file portable build)
 - `saeCalculator-macos-appleSilicon` — `saeCalculator.app` for Apple Silicon
   Macs (M1 or newer, ~2021+); it does not run on Intel Macs
 
