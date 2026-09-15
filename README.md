@@ -120,6 +120,24 @@ Notes for the macOS app:
   signing/notarization needs an Apple Developer account; skip it for
   personal use.
 
+To publish a release, push a version tag. The workflow attaches the builds to
+a GitHub Release (release assets never expire) and uses the tag's own message
+as the release notes. Bump `appConfig.appVersion` first, along with
+`pyproject.toml` and the version the About-box test expects: the installer
+name comes from it, and the workflow does not check that the tag matches.
+
+```powershell
+git tag -a v1.3.0 -m "What changed in this release" ; git push origin v1.3.0
+```
+
+`git tag` deletes lines starting with `#` by default, so if the notes use
+Markdown headings, write them to a file and tag with `--cleanup=whitespace`
+instead:
+
+```powershell
+git tag -a v1.3.0 --cleanup=whitespace -F notes.md ; git push origin v1.3.0
+```
+
 ## Tests and lint
 
 ```powershell
