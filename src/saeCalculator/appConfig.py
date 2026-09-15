@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 appName = "SAE Fractional Calculator"
-appVersion = "1.2.1"
+appVersion = "1.2.2"
 organizationName = "Charette AI Group"
 
 # Help > About contents

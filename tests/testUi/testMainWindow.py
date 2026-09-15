@@ -168,7 +168,7 @@ def testAboutTextContents(qtbot) -> None:
 
     aboutText = mainWindow.buildAboutText()
     assert "SAE Fractional Calculator" in aboutText
-    assert "Version 1.2.1" in aboutText
+    assert "Version 1.2.2" in aboutText
     assert "Editor: Francois Charette" in aboutText
     assert "AI Agent: Claude - Fable 5" in aboutText
     assert "Charette AI Group, LLC" in aboutText
